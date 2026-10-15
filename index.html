@@ -42,7 +42,6 @@
             background-color: #0b0713;
             color: #f3f4f6;
             overflow-x: hidden;
-            /* منع تظليل ونسخ النصوص بالماوس */
             user-select: none;
             -webkit-user-select: none;
             -moz-user-select: none;
@@ -80,10 +79,10 @@
     <header class="sticky top-0 z-50 glass-panel border-b border-purple-900/40 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3 space-x-reverse cursor-pointer select-none" id="secret-logo-trigger" title="ARAB VIOLET">
-                <div class="relative w-12 h-12 rounded-full overflow-hidden border-2 border-purple-500 shadow-neon-purple">
+                <div class="relative w-12 h-12 rounded-full overflow-hidden border-2 border-purple-500 shadow-neon-purple pointer-events-none">
                     <img src="https://i.ibb.co/TqmP0rWK/logo-png.png" alt="Arab Violet Logo" class="w-full h-full object-cover">
                 </div>
-                <div>
+                <div class="pointer-events-none">
                     <span class="text-xl font-black bg-gradient-to-r from-cyan-400 via-purple-400 to-purple-600 bg-clip-text text-transparent glow-text-purple">
                         ARAB VIOLET
                     </span>
@@ -109,7 +108,7 @@
             <a href="#hero" class="block text-gray-300 hover:text-cyan-400 py-1.5 font-medium">الرئيسية</a>
             <a href="#rules-section" class="block text-gray-300 hover:text-purple-400 py-1.5 font-medium">القوانين</a>
             <a href="#faq" class="block text-gray-300 hover:text-cyan-400 py-1.5 font-medium">الأسئلة الشائعة</a>
-            <a href="#support" class="block text-gray-300 hover:text-purple-400 py-1.5 font-medium">الدعم الفني</a>
+            <a href="#support" class="block text-gray-300 hover:text-cyan-400 py-1.5 font-medium">الدعم الفني</a>
         </div>
     </header>
 
@@ -340,28 +339,14 @@
     </div>
 
     <script>
-        // --- حماية الكود ومنع الفحص والنسخ ---
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault(); // منع زر الماوس الأيمن
-        });
-
-        document.addEventListener('keydown', function(e) {
-            // منع F12
-            if (e.key === 'F12') {
-                e.preventDefault();
-                return false;
-            }
-            // منع Ctrl+U (عرض مصدر الصفحة) و Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
-            if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'ش')) {
-                e.preventDefault();
-                return false;
-            }
-            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+        // منع زر الفأرة الأيمن وأزرار الفحص
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && (e.key === 'u' || e.key === 'U')) || (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key))) {
                 e.preventDefault();
                 return false;
             }
         });
-        // ------------------------------------
 
         const defaultRules = [
             {
@@ -500,17 +485,17 @@
             renderRules(e.target.value.toLowerCase().trim());
         });
 
-        // Triple Click on Logo Trigger
+        // تفعيل النقر 3 مرات على اللوجو لفتح لوحة التحكم
         let logoClicks = 0;
         let logoClickTimer;
-        document.getElementById('secret-logo-trigger').addEventListener('click', function() {
+        document.getElementById('secret-logo-trigger').addEventListener('click', function(e) {
             logoClicks++;
             clearTimeout(logoClickTimer);
-            if (logoClicks === 3) {
+            if (logoClicks >= 3) {
                 logoClicks = 0;
                 openAdminModal();
             } else {
-                logoClickTimer = setTimeout(() => { logoClicks = 0; }, 1000);
+                logoClickTimer = setTimeout(() => { logoClicks = 0; }, 800);
             }
         });
 
