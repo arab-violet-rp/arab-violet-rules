@@ -500,8 +500,8 @@
         });
 
         function openAdminModal() {
-            let pass = prompt("أدخل كلمة المرور الخاصة بك كـ مسؤول (الافتراضية: 123):");
-            if (pass === "123") {
+            let pass = prompt("( أدخل كلمة المرور الخاصة بك كـ مسؤول ):");
+            if (pass === "b7a12") {
                 document.getElementById('admin-modal').classList.remove('hidden');
                 renderAdminList();
             } else if (pass !== null) {
